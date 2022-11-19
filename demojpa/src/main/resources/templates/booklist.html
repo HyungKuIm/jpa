@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<h1>책 리스트</h1>
+		
+		<div th:if="${pageNum == 0}">
+			현재 도서 정보가 없습니다.
+		</div>
+		
+		<table class="table table-hover" th:if="${pageNum > 0}">
+			<tr>
+				<th>id</th>
+				<th>제목</th>
+				<th>상세</th>
+			</tr>		
+			<tr th:each="boo : ${books}">
+				<td th:text="${boo.id}">1</td>
+				<td th:text="${boo.title}">삼국지</td>
+				<td th:text="${boo.detail}">삼국지다</td>		
+			</tr>
+		</table>
+		<nav aria-label="Page navigation example" th:if="${endIndex} > 0">
+			<ul class="pagination">
+				<li th:if="${nowBlock} > 1"  class="page-item">
+					<a class="page-link" th:href="@{|/?page=0|}">
+						<i class="fa fa-angle-double-left"></i>
+					</a>
+				</li>
+				<li th:if="${currentIndex} != 1" class="page-item">
+					<a class="page-link" th:href="@{|/?page=${beginIndex-2}|}">
+						<i class="fa fa-angle-left"></i>
+					</a>
+				</li>
+				<li class="page-item" 
+					th:classappend="${currentIndex == i} ? active : ''"
+					th:each="i : ${#numbers.sequence(beginIndex, endIndex)}">
+					<a class="page-link" th:href="@{|/?page=${i-1}|}">
+						<span th:text="${i}">1</span>
+					</a>
+				</li>
+				<li th:if="${currentIndex} < ${pageNum}" class="page-item">
+					<a class="page-link" th:href="@{|/?page=${endIndex}|}">
+						<i class="fa fa-angle-right"></i>
+					</a>
+				</li>
+				<li th:if="${nowBlock} < ${blockNum}" class="page-item">
+					<a class="page-link" th:href="@{|/?page=${pageNum-1}|}">
+						<i class="fa fa-angle-double-right"></i>
+					</a>
+				</li>
+			</ul>
+		</nav>
+	</div>
+</body>
+</html>
+
+
+
+
