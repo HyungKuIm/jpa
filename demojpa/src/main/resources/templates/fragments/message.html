@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+<!-- 로그인 메시지 -->
+<div th:fragment="login">
+	<div class="alert alert-danger" th:if="${param.error}">
+		<small>사용자아이디나 패스워드가 정확하지 않습니다.</small>
+	</div>
+	
+	<div class="alert alert-success" th:if="${param.regi_ok}">
+		<small>회원 가입 완료되었습니다!</small>
+	</div>
+</div>
+</body>
+</html>

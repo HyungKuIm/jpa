@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>회원 리스트</title>
+</head>
+<body>
+	<table border="1">
+		<tr>
+			<th>순번</th>
+			<th>사용자이름</th>
+			<th>E-mail</th>
+			<th>성별</th>
+			<th>권한</th>
+		</tr>
+		<tr th:each="y : ${adminLists}">
+			<td th:text="${y.id}">1</td>
+			<td th:text="${y.username}">강호동</td>
+			<th th:text="${y.email}">hodong@yanolja.com</th>
+			<th th:text="${T(com.oraclejava.util.Type).GENDERS.get(y.gender)}">남</th>
+			<th th:text="${y.authority}">admin</th>
+		</tr>
+	</table>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<!-- 탑바 -->
+	<div th:fragment="topbar" class="offcanvas-outside bg-light">
+		<div class="container-fluid">
+			<span th:text="${username}"></span>님 로그인중.... <br/>
+			<span th:text="${authority}"></span> 권한 있습니다. <br/>
+			<a th:href="@{/logout}">
+				<i class="bi bi-box-arrow-right"></i>
+				로그아웃
+			</a>
+		</div>
+	</div>
+</body>
+</html>

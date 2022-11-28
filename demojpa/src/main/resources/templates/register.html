@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/loginLayout}">
+<head>
+<meta charset="UTF-8">
+<title>KB Book Register</title>
+</head>
+<body>
+<main layout:fragment="content" class="bg-image">
+	<div class="container">
+		<div class="row vh-100 align-item-center justify-content-center">
+			<div class="card shadow" style="max-width: 480px;">
+				<div class="card-body">
+					<h3 class="card-title mb-3 text-center text-navy">
+						회원가입입니다. 많은 가입 바랄게요..
+					</h3>
+					
+					<form th:action="@{/register}" th:object="${user}"
+						method="post">
+						<div class="mb-3">
+							<label for="username" class="form-label">
+								<span class="badge bg-danger">필수입력</span>
+								사용자아이디
+							</label>
+							<input class="form-control" type="text"
+								th:errorclass="is-invalid" th:field="*{username}"/>
+							<div class="invalid-feedback" th:errors="*{username}"></div>
+						</div>
+						<div class="mb-3">
+							<label for="username" class="form-label">
+								<span class="badge bg-danger">필수입력</span>
+								패스워드
+							</label>
+							<input class="form-control" type="password"
+								th:errorclass="is-invalid" th:field="*{password}"/>
+							<div class="invalid-feedback" th:errors="*{password}"></div>
+						</div>
+						<div class="mb-3">
+							<label for="username" class="form-label">
+								<span class="badge bg-danger">필수입력</span>
+								E-mail
+							</label>
+							<input class="form-control" type="email"
+								th:errorclass="is-invalid" th:field="*{email}"/>
+							<div class="invalid-feedback" th:errors="*{email}"></div>
+						</div>
+						<div class="mb-3">
+							성별
+							<div class="ms-2 form-check"
+								th:each="gender : ${T(com.oraclejava.util.Type).GENDERS}">
+								<input class="form-check-input" type="radio"
+									th:field="*{gender}" th:value="${gender.key}"/>
+								<label class="form-check-label"
+									 th:for="${#ids.prev('gender')}"
+									 th:text="${gender.value}"></label>
+								
+								
+							</div>
+						</div>	
+						
+						<button class="w-100 btn btn-navy" type="submit">
+							회원가입
+						</button>
+						
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</main>
+</body>
+</html>

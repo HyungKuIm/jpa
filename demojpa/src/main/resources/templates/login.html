@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/loginLayout}">
+<head>
+<meta charset="UTF-8">
+<title>KB Book Login</title>
+</head>
+<body>
+<main layout:fragment="content" class="bg-image">
+	<div class="container">
+		<div class="row vh-100 align-item-center justify-content-center">
+			<div class="card shadow" style="max-width: 480px;">
+				<div class="card-body">
+					<h3 class="card-title mb-3 text-center text-navy">
+						사용자 로그인
+					</h3>
+					
+					<!-- 로그인시 에러메시지 -->
+					<div th:replace="~{fragments/message :: login}">
+					</div>
+					
+					<form th:action="@{/login}" method="post">
+						<div class="mb-3">
+							<input class="form-control" type="text"
+								name="username" placeholder="아이디"/>
+						</div>
+						<div class="mb-3">
+							<input class="form-control" type="password"
+								name="password" placeholder="패스워드"/>
+						</div>
+						
+						<button class="w-100 btn btn-navy" type="submit">
+							로그인
+						</button>
+					</form>
+					
+					<hr/>
+					<div class="text-center">
+						<a th:href="@{/register}" class="text-navy">
+							회원 가입
+						</a>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+		
+	</div>
+	
+</main>
+
+</body>
+</html>

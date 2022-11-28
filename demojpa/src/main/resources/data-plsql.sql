@@ -5,7 +5,7 @@ DECLARE
  vn_data1 VARCHAR2(255) := '책제목_';
  vn_data2 VARCHAR2(4000) := '책내용_';
 BEGIN
-	 FOR i IN 1..5000
+	 FOR i IN 1..3000
 	 LOOP
         INSERT INTO book(id, title, contents)
         VALUES

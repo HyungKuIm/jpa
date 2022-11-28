@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<div th:fragment="sidebar">
+<div class="offcanvas offcanvas-start"
+		data-bs-scroll="true"
+		data-bs-backdrop="false"
+		tabindex="-1"
+		id="offcanvasScrolling"
+		aria-labelledby="offcanvaseScrollingLabel">
+		
+		<nav class="navbar-dark bg-image text-white h-100">
+			<div class="offcanvas-header">
+				<h4 class="offcanvas-title">
+					<a th:href="@{/}" class="text-white">
+						<span class="d-inline-block me-1"
+							style="transform: rotate(-15deg)">
+							KB Book
+						</span>
+						
+					</a>
+				</h4>
+			</div>
+			
+			<div class="offcanvas-body pt-0">
+				<hr class="mt-1"/>
+				<ul class="navbar-nav">
+					<li class="nav-item">
+						<a th:href="@{/}" class="nav-link text-white">
+							<i class="bi bi-credit-card-2-front-fill fs-3"></i>
+							책 목록
+						</a>
+					</li>
+					<li class="nav-item">
+						<a th:href="@{/add}" class="nav-link text-white">
+							<i class="bi bi-book-fill me-2"></i>
+							책 등록
+						</a>
+					</li>
+					
+				</ul>
+				
+				<hr />
+			
+				<ul class="navbar-nav">
+					<li class="nav-item" sec:authorize="hasAuthority('ADMIN')">
+						<a th:href="@{/admin/list}" class="nav-link text-white">
+							<i class="bi bi-table"></i>
+							사용자 목록
+						</a>
+					</li>
+				</ul>
+				
+				<!-- 닫기 버튼 -->
+				<div class="text-center d-lg-none">
+					<button type="button" class="btn-circle btn-light"
+						data-bs-dismiss="offcanvas" aria-label="Close">
+						<i class="bi bi-chevron-left"></i>닫기
+					</button>
+				</div>
+			</div>
+		</nav>
+		
+	</div>
+</div>
+</body>
+</html>

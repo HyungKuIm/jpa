@@ -3,60 +3,107 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/layout}">
 <head>
-<meta charset="UTF-8">
+<meta charset="UTF-8"/>
 <title>Insert title here</title>
 </head>
 <body>
 	<div layout:fragment="content">
-		<h1>책 리스트</h1>
-		
-		<div th:if="${pageNum == 0}">
-			현재 도서 정보가 없습니다.
+		<div th:replace="~{fragments/topbar :: topbar}">
 		</div>
+		<main class="offcanvas-outside bg-light">
+			<div class="container-fluid">
+				<h1>책 리스트</h1>
+				
+				
+				<div th:if="${pageNum == 0}">
+					현재 도서 정보가 없습니다. 책 점 입력해 주세요...^^
+				</div>
+				
+				<table class="table table-hover"  th:if="${pageNum != 0}">
+					<thead>
+						<tr>
+							<th>id</th>
+							<th>제목</th>
+							<th>상세</th>
+							<th></th>
+						</tr>	
+					</thead>
+					<tbody>	
+						<tr th:each="book : ${books}" th:object="${book}">
+							<td th:text="*{id}">1</td>
+							<td th:text="*{title}">삼국지</td>
+							<td>
+								<span th:if="*{detail != null and #strings.length(detail) > 30}"
+									th:text="*{#strings.substring(detail,0,30) + '&#x2026;'}">삼국지다</span>
+								<span th:if="*{detail != null and #strings.length(detail) <= 30}"
+									th:text="*{detail}">서유기다.</span>
+								<div th:each="comment : ${book.bookComments}">
+									코멘트 쓴사람 이름: <span th:text="${comment.name}">코멘트대마왕</span>
+									코멘트 내용: <span th:text="${comment.content}">아놔~ 아까비... 무조건 필독!!</span>
+								</div>
+								<form th:action="@{/postcomment}"
+									th:object="${bookComment}" method="post">
+									<input type="hidden" name="book.id" th:value="${book.id}"/>
+									이름: <br/>
+									<input type="text" name="name" th:field="*{name}"
+										value="" />
+									코멘트 내용:<br/>
+									<textarea name="content" th:field="*{content}" rows="5" cols="25"></textarea>
+									<br/>
+									<input type="submit" value="코멘트 투고"/>
+								</form>	
+							</td>
+							<td>
+								<a th:href="@{/edit/{id}(id=*{id})}"
+									class="btn btn-navy">
+									<i class="bi bi-pencil-square"></i>
+									수정
+								</a>
+							</td>	
+							<td>
+								<a th:href="@{/delete/{id}(id=*{id})}"
+									class="btn btn-danger">
+									<i class="bi bi-trash-fill"></i>
+									삭제
+								</a>
+							</td>	
+						</tr>
+					</tbody>
+				</table>
+				<nav aria-label="Page navigation example" th:if="${pageNum != 0}">
+					<ul class="pagination">
+						<li th:if="${nowBlock} > 1"  class="page-item">
+							<a class="page-link" th:href="@{|/?page=0|}">
+								<i class="fa fa-angle-double-left"></i>
+							</a>
+						</li>
+						<li th:if="${currentIndex} != 1 and ${nowBlock} > 1" class="page-item">
+							<a class="page-link" th:href="@{|/?page=${beginIndex-2}|}">
+								<i class="fa fa-angle-left"></i>
+							</a>
+						</li>
+						<li class="page-item" 
+							th:classappend="${currentIndex == i} ? active : ''"
+							th:each="i : ${#numbers.sequence(beginIndex, endIndex)}">
+							<a class="page-link" th:href="@{|/?page=${i-1}|}">
+								<span th:text="${i}">1</span>
+							</a>
+						</li>
+						<li th:if="${nowBlock} < ${blockNum}" class="page-item">
+							<a class="page-link" th:href="@{|/?page=${endIndex}|}">
+								<i class="fa fa-angle-right"></i>
+							</a>
+						</li>
+						<li th:if="${nowBlock} < ${blockNum}" class="page-item">
+							<a class="page-link" th:href="@{|/?page=${pageNum-1}|}">
+								<i class="fa fa-angle-double-right"></i>
+							</a>
+						</li>
+					</ul>
+				</nav>
+			</div>
+		</main>
 		
-		<table class="table table-hover" th:if="${pageNum > 0}">
-			<tr>
-				<th>id</th>
-				<th>제목</th>
-				<th>상세</th>
-			</tr>		
-			<tr th:each="boo : ${books}">
-				<td th:text="${boo.id}">1</td>
-				<td th:text="${boo.title}">삼국지</td>
-				<td th:text="${boo.detail}">삼국지다</td>		
-			</tr>
-		</table>
-		<nav aria-label="Page navigation example" th:if="${endIndex} > 0">
-			<ul class="pagination">
-				<li th:if="${nowBlock} > 1"  class="page-item">
-					<a class="page-link" th:href="@{|/?page=0|}">
-						<i class="fa fa-angle-double-left"></i>
-					</a>
-				</li>
-				<li th:if="${currentIndex} != 1" class="page-item">
-					<a class="page-link" th:href="@{|/?page=${beginIndex-2}|}">
-						<i class="fa fa-angle-left"></i>
-					</a>
-				</li>
-				<li class="page-item" 
-					th:classappend="${currentIndex == i} ? active : ''"
-					th:each="i : ${#numbers.sequence(beginIndex, endIndex)}">
-					<a class="page-link" th:href="@{|/?page=${i-1}|}">
-						<span th:text="${i}">1</span>
-					</a>
-				</li>
-				<li th:if="${currentIndex} < ${pageNum}" class="page-item">
-					<a class="page-link" th:href="@{|/?page=${endIndex}|}">
-						<i class="fa fa-angle-right"></i>
-					</a>
-				</li>
-				<li th:if="${nowBlock} < ${blockNum}" class="page-item">
-					<a class="page-link" th:href="@{|/?page=${pageNum-1}|}">
-						<i class="fa fa-angle-double-right"></i>
-					</a>
-				</li>
-			</ul>
-		</nav>
 	</div>
 </body>
 </html>
