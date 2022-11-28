@@ -41,17 +41,34 @@
 									코멘트 쓴사람 이름: <span th:text="${comment.name}">코멘트대마왕</span>
 									코멘트 내용: <span th:text="${comment.content}">아놔~ 아까비... 무조건 필독!!</span>
 								</div>
-								<form th:action="@{/postcomment}"
-									th:object="${bookComment}" method="post">
-									<input type="hidden" name="book.id" th:value="${book.id}"/>
-									이름: <br/>
-									<input type="text" name="name" th:field="*{name}"
-										value="" />
-									코멘트 내용:<br/>
-									<textarea name="content" th:field="*{content}" rows="5" cols="25"></textarea>
-									<br/>
-									<input type="submit" value="코멘트 투고"/>
-								</form>	
+								
+								
+								
+									<form th:action="@{/postcomment}"
+										th:object="${bookComment}" method="post">
+										<input type="hidden" name="book.id" th:value="${book.id}"/>
+										<div class="mb-2">
+										<label for="name">이름:</label>
+										<input th:if="${book.id == bookComment?.book?.id}" type="text" name="name"  th:field="*{name}"
+											class="form-control"
+											th:errorclass="is-invalid"
+											/>
+										<input th:if="${book.id != bookComment?.book?.id}" type="text" name="name" class="form-control"/>	
+										
+										<div  th:if="${book.id == bookComment?.book?.id}" th:errors="*{name}"
+												class="invalid-feedback">에러!</div>
+										</div>
+										<div class="mb-3">
+											<label for="content">코멘트 내용:</label>
+											<textarea th:if="${book.id == bookComment?.book?.id}" name="content" class="form-control" th:field="*{content}" rows="5" cols="25"
+												th:errorclass="is-invalid"></textarea>
+											<textarea th:if="${book.id != bookComment?.book?.id}" name="content" class="form-control"></textarea>	
+											<div th:if="${book.id == bookComment?.book?.id}" th:errors="*{content}"
+												class="invalid-feedback">에러!</div>
+										</div>
+										<input type="submit" value="코멘트 투고" class="btn btn-navy col-4"/>
+									</form>	
+								
 							</td>
 							<td>
 								<a th:href="@{/edit/{id}(id=*{id})}"
